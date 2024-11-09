@@ -1,0 +1,4 @@
+(channel
+ (version 0)
+ (url "https://github.com/guile-wayland/channel")
+ (directory "modules"))
