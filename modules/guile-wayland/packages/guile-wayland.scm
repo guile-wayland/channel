@@ -29,7 +29,7 @@
         (revision "0"))
     (package
       (name "guile-libinput")
-      (version "0.1.0")
+      (version (git-version "0.1.0" revision commit))
       (source
        (origin
          (method git-fetch)
@@ -116,7 +116,7 @@
         (revision "0"))
     (package
       (name "guile-wayland")
-      (version "0.0.2")
+      (version (git-version "0.0.2" revision commit))
       (source
        (origin
          (method git-fetch)
