@@ -168,8 +168,8 @@
 
 
 (define-public guile-wlroots
-  (let ((commit "780195a990eca5951923324760de4a86217c1ed3")
-        (revision "1"))
+  (let ((commit "7295cdf6bfeede3e2d765540c6ea0a99853c9125")
+        (revision "2"))
     (package
       (name "guile-wlroots")
       (version (git-version "0.0.1" revision commit))
@@ -183,7 +183,7 @@
          (file-name (git-file-name name version))
          (sha256
           (base32
-           "1k4vfn8m44vwnk7q3zsr69d1k3690j3v0hz59d3lhy7921slw0bb"))))
+           "0p7d072ldvn1s4pcfb5pckajccannj4a7y344xl3pjrfzcdzlgih"))))
       (build-system gnu-build-system)
       (arguments (list
                   #:make-flags '(list "GUILE_AUTO_COMPILE=0")
