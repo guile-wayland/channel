@@ -1,3 +1,5 @@
+;;; Copyright © 2024-2025 Zheng Junjie <z572@z572.online>
+;;; Copyright © 2025 Nicolas Graves <ngraves@ngraves.fr>
 (define-module (guile-wayland packages guile-wayland)
   #:use-module (guile-wayland packages guile-xyz)
   #:use-module (guix utils)
@@ -11,6 +13,7 @@
   #:use-module (gnu packages gl)
   #:use-module (gnu packages xdisorg)
   #:use-module (guix build-system gnu)
+  #:use-module (guix build-system guile)
   #:use-module (gnu packages bash)
   #:use-module (gnu packages)
   #:use-module (gnu packages autotools)
@@ -220,6 +223,58 @@
       (home-page "")
       (license license:gpl3+))))
 
+(define-public guile-dmenu
+  (let ((commit "133ead2")
+        (revision "1"))
+    (package
+      (name "guile-dmenu")
+      (version (git-version "0.0.0" revision commit))
+      (source
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://git.sr.ht/~ngraves/guile-dmenu")
+               (commit commit)))
+         (file-name (git-file-name name version))
+         (sha256
+          (base32 "18bnb5fbwhvij4ysyfj2j48ms9vz5s5ni6h5zmvyl6k4ay0xxy7d"))))
+      (build-system guile-build-system)
+      (arguments
+       (list
+        #:source-directory "src"
+        #:phases
+        #~(modify-phases %standard-phases
+            (add-after 'build 'install-script
+              (lambda _
+                (let* ((bin (string-append #$output "/bin/"))
+                       (guile-dmenu (string-append bin ".guile-dmenu.scm"))
+                       (dmenu (string-append bin "dmenu")))
+                  (mkdir-p bin)
+                  (copy-file "scripts/guile-dmenu.scm" guile-dmenu)
+                  (call-with-output-file dmenu
+                    (lambda (out)
+                      (format out "#!~a/bin/bash
+export GUILE_LOAD_PATH=\"~a${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH\"
+export GUILE_LOAD_COMPILED_PATH=\"~a${GUILE_LOAD_COMPILED_PATH:+:}~a\"
+exec -a \"$0\" ~a --no-auto-compile -e main ~a \"$@\""
+                              (which "bash")
+                              (getenv "GUILE_LOAD_PATH")
+                              (getenv "GUILE_LOAD_COMPILED_PATH")
+                              "$GUILE_LOAD_COMPILED_PATH"
+                              (which "guile")
+                              guile-dmenu)))
+                  (chmod dmenu #o755)))))))
+      (inputs (list bash-minimal guile-3.0))
+      (propagated-inputs (list guile-cairo
+                               guile-fibers
+                               guile-wayland
+                               guile-xkbcommon))
+      (home-page "https://git.sr.ht/~ngraves/guile-dmenu")
+      (synopsis "Guile completing-read library and dynamic menu")
+      (description "This package provides a guile wayland implementation
+for dmenu.  On the guile-side, you can also find an Emacs-like
+completing-read procedure.")
+      (license license:gpl3+))))
 
 (define-public gwwm
   (let ((revision "0")
