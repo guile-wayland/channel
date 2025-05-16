@@ -75,41 +75,39 @@
       (license license:gpl3+))))
 
 (define-public guile-xkbcommon
-  (let ((commit "e0f1fb2675d0b5d4b6aac12793c9314892edb66d")
-        (revision "0"))
-    (package
-      (name "guile-xkbcommon")
-      (version (git-version "0.0.1" revision commit))
-      (source
-       (origin
-         (method git-fetch)
-         (uri (git-reference
-               (url
-                "https://github.com/Z572/guile-xkbcommon")
-               (commit commit)))
-         (file-name (git-file-name name version))
-         (sha256
-          (base32
-           "1fk88spl73sky45b6zskh9mynb13dbii0di1k0cmaxgdb00c4mm7"))))
-      (build-system gnu-build-system)
-      (arguments
-       (list #:make-flags #~(list "GUILE_AUTO_COMPILE=0")))
-      (native-inputs
-       (list autoconf automake
-             pkg-config
-             guile-3.0-latest))
-      (inputs (list guile-3.0-latest
-                    libxkbcommon
+  (package
+    (name "guile-xkbcommon")
+    (version "0.0.2")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url
+              "https://github.com/Z572/guile-xkbcommon")
+             (commit (string-append "v" version))))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32
+         "1lfjnmwb1y1ji989xk6i2sdpqrm6lbgr06fnhy8kyaxa4anyvm4c"))))
+    (build-system gnu-build-system)
+    (arguments
+     (list #:make-flags #~(list "GUILE_AUTO_COMPILE=0")))
+    (native-inputs
+     (list autoconf automake
+           pkg-config
+           guile-3.0-latest))
+    (inputs (list guile-3.0-latest
+                  libxkbcommon
                   ;;; xkbregistry pc file require
-                    libxml2))
-      (propagated-inputs
-       (list
-        guile-bytestructure-class
-        guile-bytestructures))
-      (synopsis "")
-      (description "")
-      (home-page "")
-      (license license:gpl3+))))
+                  libxml2))
+    (propagated-inputs
+     (list
+      guile-bytestructure-class
+      guile-bytestructures))
+    (synopsis "")
+    (description "")
+    (home-page "")
+    (license license:gpl3+)))
 
 (define-public guile-wayland
   (let ((commit "556c76446d4c2f7c5425f9af2d82bd72d8b1f035")
