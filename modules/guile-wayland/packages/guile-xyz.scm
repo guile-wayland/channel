@@ -42,8 +42,8 @@
       (license license:gpl3+))))
 
 (define-public guile-util572
-  (let ((commit "cf8437bd9cddf2c14dd60623c2841d0048ed1d24")
-        (revision "0"))
+  (let ((commit "8e8e274fccfb1814c0ca5f6253686a59da083e3e")
+        (revision "1"))
     (package
       (name "guile-util572")
       (version (git-version "0" revision commit))
@@ -55,7 +55,7 @@
                       (file-name (git-file-name name version))
                       (sha256
                        (base32
-                        "1jz1qzqzf317wbvmi3x7brj8fxypxj3bgcg7kxxnwh7hxb6mh70y"))))
+                        "1q7khqr9aav263vz7slipw4bbikqhcgp37vm755acp88f6lx7kk2"))))
       (build-system gnu-build-system)
       (arguments
        (list
