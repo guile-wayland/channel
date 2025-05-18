@@ -12,8 +12,8 @@
   #:use-module (guix packages))
 
 (define-public guile-bytestructure-class
-  (let ((commit "3d126a8fef81aa1422742d92478d94bf1b575c51")
-        (revision "0"))
+  (let ((commit "b95a6adfa22d3be61d30c05f6034d5e7eb780d5d")
+        (revision "1"))
     (package
       (name "guile-bytestructure-class")
       (version (git-version "0.2.0" revision commit))
@@ -25,7 +25,7 @@
                       (file-name (git-file-name name version))
                       (sha256
                        (base32
-                        "195ldnix62aghahljadbji3q4palc8illcmkggdwwq5vkbkzd0p3"))))
+                        "055r5014v1jn1yacl0i2lkibynpkazlxv0qhahwfl1v982ib16rx"))))
       (build-system gnu-build-system)
       (arguments
        (list #:make-flags #~'("GUILE_AUTO_COMPILE=0")))
