@@ -136,7 +136,8 @@
       (inputs (list guile-3.0-latest
                     libxkbcommon
                   ;;; xkbregistry pc file require
-                    libxml2)))))
+                    libxml2))
+      (propagated-inputs '()))))
 
 (define-public guile-wayland
   (let ((commit "556c76446d4c2f7c5425f9af2d82bd72d8b1f035")
