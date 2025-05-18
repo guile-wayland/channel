@@ -109,6 +109,35 @@
     (home-page "https://github.com/Z572/guile-xkbcommon")
     (license license:gpl3+)))
 
+(define-public guile-xkbcommon-next
+  (let ((commit "d2b502f0161f610acc8ea42b86a4ace147ee3acb")
+        (revision "0"))
+    (package
+      (inherit guile-xkbcommon)
+      (name "guile-xkbcommon-next")
+      (version (git-version "0.1.0" revision commit))
+      (source
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url
+                "https://github.com/Z572/guile-xkbcommon")
+               (commit commit)))
+         (file-name (git-file-name name version))
+         (sha256
+          (base32
+           "08mj8pbvnnf070mdx5xgh0mqvd4k5d3s838wwkpqskjnmca94za5"))))
+      (arguments
+       (list #:make-flags #~(list "GUILE_AUTO_COMPILE=0")))
+      (native-inputs
+       (list autoconf automake
+             pkg-config
+             guile-3.0-latest))
+      (inputs (list guile-3.0-latest
+                    libxkbcommon
+                  ;;; xkbregistry pc file require
+                    libxml2)))))
+
 (define-public guile-wayland
   (let ((commit "556c76446d4c2f7c5425f9af2d82bd72d8b1f035")
         (revision "0"))
