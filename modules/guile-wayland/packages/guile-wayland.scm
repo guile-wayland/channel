@@ -11,6 +11,7 @@
   #:use-module (gnu packages gl)
   #:use-module (gnu packages xdisorg)
   #:use-module (guix build-system gnu)
+  #:use-module (guix build-system guile)
   #:use-module (gnu packages bash)
   #:use-module (gnu packages)
   #:use-module (gnu packages autotools)
@@ -250,6 +251,52 @@
       (home-page "")
       (license license:gpl3+))))
 
+(define-public guile-dmenu
+  (let* ((commit "4aeb688953d59971509b6fc1b0a9da81b5d08730")
+         (revision "0"))
+    (package
+      (name "guile-dmenu")
+      (version (git-version "0.0.0" revision commit))
+      (source
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://git.sr.ht/~ngraves/guile-dmenu")
+               (commit commit)))
+         (file-name (git-file-name name version))
+         (sha256
+          (base32 "16ashksbssi0pvbzmjns5b5wr4y40i8kxd27b2zkl6ic7bpsmvk2"))))
+      (build-system guile-build-system)
+      (arguments
+       (list
+        #:source-directory "src"
+        #:phases
+        #~(modify-phases %standard-phases
+            (add-after 'build 'install-script
+              (lambda* (#:key inputs #:allow-other-keys)
+                (let* ((bin (string-append #$output "/bin/"))
+                       (dmenu (string-append bin "dmenu")))
+                  (install-file "scripts/dmenu" bin)
+                  (wrap-program dmenu
+                    #:sh (search-input-file inputs "bin/bash")
+                    `("GUILE_AUTO_COMPILE" ":" = ("0"))
+                    `("GUILE_LOAD_PATH" ":" prefix
+                      ,(string-split (getenv "GUILE_LOAD_PATH") #\:))
+                    `("GUILE_LOAD_COMPILED_PATH" ":" prefix
+                      ,(string-split (getenv "GUILE_LOAD_COMPILED_PATH")
+                                     #\:)))))))))
+      (native-inputs (list guile-3.0))
+      (inputs (list bash-minimal guile-3.0))
+      (propagated-inputs (list guile-cairo
+                               guile-fibers
+                               guile-wayland
+                               guile-xkbcommon))
+      (home-page "https://git.sr.ht/~ngraves/guile-dmenu")
+      (synopsis "Guile completing-read library and dynamic menu")
+      (description "This package provides a guile wayland implementation
+for dmenu.  On the guile-side, you can also find an Emacs-like
+completing-read procedure.")
+      (license license:gpl3+))))
 
 (define-public gwwm
   (let ((revision "0")
