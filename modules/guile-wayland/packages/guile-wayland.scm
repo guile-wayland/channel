@@ -104,9 +104,9 @@
      (list
       guile-bytestructure-class
       guile-bytestructures))
-    (synopsis "")
-    (description "")
-    (home-page "")
+    (synopsis "Guile bindings for libxkbcommon")
+    (description "This package provides Guile FFI bindings for libxkbcommon.")
+    (home-page "https://github.com/Z572/guile-xkbcommon")
     (license license:gpl3+)))
 
 (define-public guile-wayland
